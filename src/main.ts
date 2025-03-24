@@ -15,7 +15,13 @@ async function bootstrap() {
   );
 
   app.setGlobalPrefix('api');
-  app.enableCors();
+  app.enableCors({
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    maxAge: 3600,
+  });
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

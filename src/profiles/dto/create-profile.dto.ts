@@ -3,11 +3,7 @@ import { IsOptional, IsString } from "class-validator";
 export class CreateProfileDto {
   @IsString()
   @IsOptional()
-  firstName?: string;
-
-  @IsString()
-  @IsOptional()
-  lastName?: string;
+  fullName?: string;
 
   @IsString()
   @IsOptional()
@@ -20,10 +16,6 @@ export class CreateProfileDto {
   @IsString()
   @IsOptional()
   contactPerson?: string;
-
-  @IsString()
-  @IsOptional()
-  phoneNumber?: string;
 
   @IsString()
   @IsOptional()

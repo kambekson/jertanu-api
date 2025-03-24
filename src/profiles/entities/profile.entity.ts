@@ -11,12 +11,7 @@ export class ProfileEntity {
   @Column({
     nullable: true
   })
-  firstName: string;
-
-  @Column({
-    nullable: true
-  })
-  lastName: string;
+  fullName: string;
 
   @Column({
     nullable: true
@@ -32,11 +27,6 @@ export class ProfileEntity {
     nullable: true
   })
   contactPerson: string;
-
-  @Column({
-    nullable: true
-  })
-  phoneNumber: string;
 
   @Column({
     nullable: true

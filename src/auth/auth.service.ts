@@ -61,8 +61,7 @@ export class AuthService {
       password: hashedPassword,
       role: Role.USER,
       profile: {
-        firstName: userData.profile.firstName,
-        lastName: userData.profile.lastName,
+        fullName: userData.profile.fullName,
         phone: userData.profile.phone
       }
     });

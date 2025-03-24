@@ -18,8 +18,9 @@ POST /auth/register/user
   "email": "user@example.com",
   "password": "password123",
   "profile": {
-    "fullName": "Иван Иванов",
-    "phone": "+77777777777"
+    "firstName": "Иван",
+    "lastName": "Иванов",
+    "phoneNumber": "+77777777777"
   }
 }
 ```
@@ -33,8 +34,9 @@ POST /auth/register/user
     "email": "user@example.com",
     "role": "USER",
     "profile": {
-      "fullName": "Иван Иванов",
-      "phone": "+77777777777"
+      "firstName": "Иван",
+      "lastName": "Иванов",
+      "phoneNumber": "+77777777777"
     }
   },
   "token": "jwt_token"
@@ -54,8 +56,8 @@ POST /auth/register/agency
   "profile": {
     "companyName": "ТурАгентство",
     "description": "Описание компании",
-    "phone": "+77777777777",
-    "address": "Адрес компании"
+    "phoneNumber": "+77777777777",
+    "legalAddress": "Адрес компании"
   }
 }
 ```
@@ -71,8 +73,8 @@ POST /auth/register/agency
     "profile": {
       "companyName": "ТурАгентство",
       "description": "Описание компании",
-      "phone": "+77777777777",
-      "address": "Адрес компании"
+      "phoneNumber": "+77777777777",
+      "legalAddress": "Адрес компании"
     }
   },
   "token": "jwt_token"
@@ -118,65 +120,6 @@ POST /auth/refresh
   "access_token": "new_jwt_token",
   "refresh_token": "new_refresh_token"
 }
-```
-
-### Получение данных текущего пользователя
-```http
-GET /auth/me
-```
-
-**Заголовки:**
-```
-Authorization: Bearer jwt_token
-```
-
-**Ответ:**
-```json
-{
-  "id": "uuid",
-  "email": "user@example.com",
-  "role": "USER",
-  "profile": {
-    "fullName": "Иван Иванов",
-    "phone": "+77777777777"
-  },
-  "createdAt": "2024-03-20T10:00:00.000Z",
-  "updatedAt": "2024-03-20T10:00:00.000Z"
-}
-```
-
-Для тур-агентств в профиле будут дополнительные поля:
-```json
-{
-  "id": "uuid",
-  "email": "agency@example.com",
-  "role": "TOUR_AGENCY",
-  "profile": {
-    "companyName": "ТурАгентство",
-    "description": "Описание компании",
-    "phone": "+77777777777",
-    "legalAddress": "Адрес компании",
-    "logo": "url_to_logo"
-  },
-  "createdAt": "2024-03-20T10:00:00.000Z",
-  "updatedAt": "2024-03-20T10:00:00.000Z"
-}
-```
-
-Чтобы использовать этот эндпоинт:
-1. После успешной аутентификации сохраните JWT токен
-2. Добавляйте токен в заголовки запросов:
-```javascript
-fetch('/auth/me', {
-  headers: {
-    'Authorization': `Bearer ${your_jwt_token}`
-  }
-})
-```
-
-Для получения пользователя по ID (только для администраторов) можно использовать:
-```http
-GET /users/:id
 ```
 
 ## Туры

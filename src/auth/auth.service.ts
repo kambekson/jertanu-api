@@ -10,6 +10,7 @@ import { SignInDto } from "./dto/sign-in.dto";
 import { CreateTourAgencyDto } from '../users/dto/create-tour-agency.dto';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../users/user.entity';
+import { ProfilesService } from '../profiles/profiles.service';
 
 const scrypt = promisify(_scrypt);
 
@@ -18,6 +19,7 @@ export class AuthService {
   constructor(
     private userService: UsersService,
     private jwtService: JwtService,
+    private profilesService: ProfilesService,
   ) {}
 
   async signUp({ email, password, profile }: CreateUserDto) {
@@ -56,14 +58,17 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const { password, role, ...userData } = createUserDto;
     
+    const profile = await this.profilesService.create({
+      firstName: userData.profile.firstName,
+      lastName: userData.profile.lastName,
+      phoneNumber: userData.profile.phoneNumber
+    });
+
     const user = await this.userService.create({
       email: userData.email,
       password: hashedPassword,
       role: Role.USER,
-      profile: {
-        fullName: userData.profile.fullName,
-        phone: userData.profile.phone
-      }
+      profile: profile
     });
 
     const { password: _, ...userWithoutPassword } = user;

@@ -2,8 +2,11 @@ import { Expose } from 'class-transformer';
 
 export class UserProfileDto {
   @Expose()
-  fullName?: string;
+  firstName?: string;
 
   @Expose()
-  phone?: string;
+  lastName?: string;
+
+  @Expose()
+  phoneNumber?: string;
 } 

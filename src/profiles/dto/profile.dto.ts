@@ -8,9 +8,6 @@ export class ProfileDto {
   lastName?: string;
 
   @Expose()
-  phone?: string;
-
-  @Expose()
   companyName?: string;
 
   @Expose()

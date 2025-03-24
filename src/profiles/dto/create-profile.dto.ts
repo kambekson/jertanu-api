@@ -1,35 +1,49 @@
+import { Expose } from 'class-transformer';
 import { IsOptional, IsString } from "class-validator";
 
 export class CreateProfileDto {
-  @IsString()
+  @Expose()
   @IsOptional()
-  fullName?: string;
+  @IsString()
+  firstName?: string;
 
-  @IsString()
+  @Expose()
   @IsOptional()
-  phone?: string;
+  @IsString()
+  lastName?: string;
 
-  @IsString()
+  @Expose()
   @IsOptional()
+  @IsString()
+  phoneNumber?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
   companyName?: string;
 
-  @IsString()
+  @Expose()
   @IsOptional()
+  @IsString()
   contactPerson?: string;
 
-  @IsString()
+  @Expose()
   @IsOptional()
+  @IsString()
   agencyType?: string;
 
-  @IsString()
+  @Expose()
   @IsOptional()
+  @IsString()
   description?: string;
 
-  @IsString()
+  @Expose()
   @IsOptional()
+  @IsString()
   legalAddress?: string;
 
-  @IsString()
+  @Expose()
   @IsOptional()
+  @IsString()
   logo?: string;
 }

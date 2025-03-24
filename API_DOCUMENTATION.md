@@ -18,8 +18,7 @@ POST /auth/register/user
   "email": "user@example.com",
   "password": "password123",
   "profile": {
-    "firstName": "Иван",
-    "lastName": "Иванов",
+    "fullName": "Иван Иванов",
     "phone": "+77777777777"
   }
 }
@@ -34,8 +33,7 @@ POST /auth/register/user
     "email": "user@example.com",
     "role": "USER",
     "profile": {
-      "firstName": "Иван",
-      "lastName": "Иванов",
+      "fullName": "Иван Иванов",
       "phone": "+77777777777"
     }
   },

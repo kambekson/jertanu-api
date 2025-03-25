@@ -3,8 +3,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { MinioService } from './minio.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/role.decorator';
-import { Role } from '../users/user.entity';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../roles/enums/role.enum';
 
 @Controller('files')
 export class MinioController {

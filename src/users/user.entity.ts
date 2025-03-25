@@ -10,7 +10,7 @@ export enum Role {
   ADMIN = 'ADMIN',
   USER = 'USER',
   TOUR_AGENCY = 'TOUR_AGENCY',
-  GUEST = 'GUEST',
+  GUEST = 'GUEST'
 }
 
 @Entity({

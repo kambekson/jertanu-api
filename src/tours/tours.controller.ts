@@ -8,8 +8,11 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '../roles/enums/role.enum';
 import { UserEntity } from '../users/user.entity';
+import { Serialize } from '../interceptors/serialize.interceptor';
+import { TourResponseDto } from './dto/tour-response.dto';
 
 @Controller('tours')
+@Serialize(TourResponseDto)
 export class ToursController {
   constructor(private readonly toursService: ToursService) {}
 

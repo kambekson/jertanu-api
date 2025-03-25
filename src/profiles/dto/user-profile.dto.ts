@@ -9,4 +9,7 @@ export class UserProfileDto {
 
   @Expose()
   phoneNumber?: string;
+
+  @Expose()
+  birthday?: Date;
 } 

@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString, IsDate } from "class-validator";
 
 export class CreateProfileDto {
   @Expose()
@@ -46,4 +46,9 @@ export class CreateProfileDto {
   @IsOptional()
   @IsString()
   logo?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsDate()
+  birthday?: Date;
 }

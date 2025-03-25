@@ -53,6 +53,12 @@ export class ProfileEntity {
   })
   logo: string;
 
+  @Column({
+    nullable: true,
+    type: 'date'
+  })
+  birthday: Date;
+
   @OneToOne(() => UserEntity, user => user.profile)
   user: UserEntity;
 }

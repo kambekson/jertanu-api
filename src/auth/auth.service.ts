@@ -9,7 +9,7 @@ import { UserEntity } from "../users/user.entity";
 import { SignInDto } from "./dto/sign-in.dto";
 import { CreateTourAgencyDto } from '../users/dto/create-tour-agency.dto';
 import * as bcrypt from 'bcrypt';
-import { Role } from '../users/user.entity';
+import { Role } from '../roles/enums/role.enum';
 import { ProfilesService } from '../profiles/profiles.service';
 
 const scrypt = promisify(_scrypt);
@@ -81,24 +81,29 @@ export class AuthService {
     };
   }
 
-  async registerAgency(createAgencyDto: CreateTourAgencyDto) {
-    const existingUser = await this.userService.findOneByEmail(createAgencyDto.email);
-    if (existingUser) {
-      throw new BadRequestException(`User with email ${createAgencyDto.email} already exists`);
-    }
+  async registerAgency(credentials: CreateTourAgencyDto) {
+    const existingUser = await this.userService.findOneByEmail(credentials.email);
+    if (existingUser) throw new BadRequestException(`User ${existingUser.email} in use`);
 
-    const hashedPassword = await bcrypt.hash(createAgencyDto.password, 10);
-    const { password, role, ...agencyData } = createAgencyDto;
+    const hashedPassword = await bcrypt.hash(credentials.password, 10);
+    const { password, role, ...agencyData } = credentials;
     
-    const user = await this.userService.create({
+    const profile = await this.profilesService.create({
+      companyName: agencyData.profile.companyName,
+      description: agencyData.profile.description,
+      phoneNumber: agencyData.profile.phoneNumber,
+      legalAddress: agencyData.profile.legalAddress
+    });
+
+    const newUser = await this.userService.create({
       email: agencyData.email,
       password: hashedPassword,
       role: Role.TOUR_AGENCY,
-      profile: agencyData.profile
+      profile: profile
     });
 
-    const { password: _, ...userWithoutPassword } = user;
-    const tokens = await this.signIn(user);
+    const { password: _, ...userWithoutPassword } = newUser;
+    const tokens = await this.signIn(newUser);
 
     return {
       message: "Регистрация прошла успешно.",

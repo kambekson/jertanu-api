@@ -1,8 +1,12 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UsersService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UserEntity } from "./user.entity";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { GetUser } from "../auth/get-user.decorator";
+import { Serialize } from "../interceptors/serialize.interceptor";
+import { UserDto } from "./dto/user.dto";
 
 @Controller('users')
 export class UsersController {
@@ -18,6 +22,22 @@ export class UsersController {
   @Get()
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  @Serialize(UserDto)
+  async getProfile(@GetUser() user: UserEntity) {
+    const userId = user.id;
+    return this.usersService.findById(userId);
+  }
+
+  @Patch('me')
+  @UseGuards(JwtAuthGuard)
+  @Serialize(UserDto)
+  async updateMe(@GetUser() user: UserEntity, @Body() body: UpdateUserDto): Promise<UserEntity> {
+    const userId = user.id;
+    return this.usersService.update(userId, body);
   }
 
   @Get(':id')

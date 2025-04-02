@@ -122,6 +122,49 @@ POST /auth/refresh
 }
 ```
 
+## Пользователи
+
+### Получение профиля текущего пользователя
+```http
+GET /users/me
+```
+
+**Заголовки:**
+```
+Authorization: Bearer jwt_token
+```
+
+**Ответ:**
+```json
+{
+  "id": 1,
+  "email": "user@example.com",
+  "role": "USER",
+  "profile": {
+    "firstName": "Иван",
+    "lastName": "Иванов",
+    "phoneNumber": "+77777777777",
+    "birthday": "1990-01-01"
+  }
+}
+```
+
+или для тур-агентства:
+
+```json
+{
+  "id": 2,
+  "email": "agency@example.com",
+  "role": "TOUR_AGENCY",
+  "profile": {
+    "companyName": "ТурАгентство",
+    "description": "Описание компании",
+    "phoneNumber": "+77777777777",
+    "legalAddress": "Адрес компании"
+  }
+}
+```
+
 ## Туры
 
 ### Создание тура (только для тур-агентств)

@@ -7,6 +7,7 @@ import { CreateTourAgencyDto } from "./dto/create-tour-agency.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { ProfilesService } from "../profiles/profiles.service";
 import { Role } from "./user.entity";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -30,17 +31,27 @@ export class UsersService {
 
   findById(id: number) {
     return this.userRepo.findOne({
-      where: { id }
+      where: { id },
+      relations: ['profile']
     });
   }
 
   findOneByEmail(email: string) {
-    return this.userRepo.findOne({ where: { email } });
+    return this.userRepo.findOne({ 
+      where: { email },
+      relations: ['profile'] 
+    });
   }
 
   async update(id: number, credentials: UpdateUserDto): Promise<UserEntity> {
     const user = await this.findById(id);
     if (!user) throw new NotFoundException(`User with ID = ${id} not found`);
+    
+    // Hash password if it's being updated
+    if (credentials.password) {
+      credentials.password = await bcrypt.hash(credentials.password, 10);
+    }
+    
     Object.assign(user, credentials);
     return this.userRepo.save(user);
   }

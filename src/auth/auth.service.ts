@@ -90,9 +90,20 @@ export class AuthService {
     
     const profile = await this.profilesService.create({
       companyName: agencyData.profile.companyName,
-      description: agencyData.profile.description,
+      officialCompanyName: agencyData.profile.officialCompanyName,
+      bin: agencyData.profile.bin,
+      registrationDate: agencyData.profile.registrationDate,
+      directorFullName: agencyData.profile.directorFullName,
+      city: agencyData.profile.city,
+      contactPerson: agencyData.profile.contactPerson,
       phoneNumber: agencyData.profile.phoneNumber,
-      legalAddress: agencyData.profile.legalAddress
+      contactEmail: agencyData.profile.contactEmail,
+      description: agencyData.profile.description,
+      legalAddress: agencyData.profile.legalAddress,
+      bankAccount: agencyData.profile.bankAccount,
+      bankBic: agencyData.profile.bankBic,
+      bankName: agencyData.profile.bankName,
+      logo: agencyData.profile.logo
     });
 
     const newUser = await this.userService.create({

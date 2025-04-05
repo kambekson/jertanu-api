@@ -26,12 +26,43 @@ export class ProfileEntity {
   @Column({
     nullable: true
   })
+  officialCompanyName: string;
+
+  @Column({
+    nullable: true
+  })
+  bin: string;
+
+  @Column({
+    nullable: true,
+    type: 'date'
+  })
+  registrationDate: Date;
+
+  @Column({
+    nullable: true
+  })
+  directorFullName: string;
+
+  @Column({
+    nullable: true
+  })
+  city: string;
+
+  @Column({
+    nullable: true
+  })
   contactPerson: string;
 
   @Column({
     nullable: true
   })
   phoneNumber: string;
+
+  @Column({
+    nullable: true
+  })
+  contactEmail: string;
 
   @Column({
     nullable: true
@@ -47,6 +78,21 @@ export class ProfileEntity {
     nullable: true
   })
   legalAddress: string;
+
+  @Column({
+    nullable: true
+  })
+  bankAccount: string;
+
+  @Column({
+    nullable: true
+  })
+  bankBic: string;
+
+  @Column({
+    nullable: true
+  })
+  bankName: string;
 
   @Column({
     nullable: true

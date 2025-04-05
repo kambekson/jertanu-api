@@ -25,12 +25,39 @@ export class CreateProfileDto {
   @Expose()
   @IsOptional()
   @IsString()
+  officialCompanyName?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
+  bin?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsDate()
+  registrationDate?: Date;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
+  directorFullName?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
   contactPerson?: string;
 
   @Expose()
   @IsOptional()
   @IsString()
-  agencyType?: string;
+  contactEmail?: string;
+
+  
 
   @Expose()
   @IsOptional()
@@ -41,6 +68,26 @@ export class CreateProfileDto {
   @IsOptional()
   @IsString()
   legalAddress?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
+  actualAddress?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
+  bankAccount?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
+  bankBic?: string;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
+  bankName?: string;
 
   @Expose()
   @IsOptional()

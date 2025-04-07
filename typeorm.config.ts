@@ -4,6 +4,8 @@ import { ConfigService } from "@nestjs/config";
 import { UserEntity } from "./src/users/user.entity";
 import { RoleEntity } from "./src/roles/entities/role.entity";
 import { ProfileEntity } from "./src/profiles/entities/profile.entity";
+import { TourEntity } from "./src/tours/entities/tour.entity";
+import { Review } from "./src/tours/entities/review.entity";
 
 config({
   path: `.env.development`,
@@ -18,6 +20,6 @@ export default new DataSource({
   username: configService.get('DB_USER'),
   password: configService.get('DB_PASSWORD'),
   database: configService.get<string>('DB_NAME'),
-  entities: [UserEntity, RoleEntity, ProfileEntity],
+  entities: [UserEntity, RoleEntity, ProfileEntity, TourEntity, Review],
   migrations: ['migrations/**']
 })

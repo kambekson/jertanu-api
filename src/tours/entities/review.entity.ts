@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { UserEntity } from '../../users/user.entity';
-import { Tour } from './tour.entity';
+import { TourEntity } from './tour.entity';
 
 @Entity('reviews')
 export class Review {
@@ -16,8 +16,8 @@ export class Review {
   @ManyToOne(() => UserEntity, user => user.reviews)
   user: UserEntity;
 
-  @ManyToOne(() => Tour, tour => tour.reviews)
-  tour: Tour;
+  @ManyToOne(() => TourEntity, tour => tour.reviews)
+  tour: TourEntity;
 
   @CreateDateColumn()
   createdAt: Date;

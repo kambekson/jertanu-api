@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Role } from '../../roles/enums/role.enum';
-import { Tour } from '../../tours/entities/tour.entity';
+import { TourEntity } from '../../tours/entities/tour.entity';
 import { Review } from '../../tours/entities/review.entity';
 
 @Entity('users')
@@ -21,11 +21,11 @@ export class User {
   })
   role: Role;
 
-  @OneToMany(() => Tour, tour => tour.createdBy)
-  createdTours: Tour[];
+  @OneToMany(() => TourEntity, tour => tour.createdBy)
+  createdTours: TourEntity[];
 
-  @ManyToMany(() => Tour, tour => tour.favoritedBy)
-  favoriteTours: Tour[];
+  @ManyToMany(() => TourEntity, tour => tour.favoritedBy)
+  favoriteTours: TourEntity[];
 
   @OneToMany(() => Review, review => review.user)
   reviews: Review[];

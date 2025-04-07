@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Tour } from './entities/tour.entity';
+import { TourEntity } from './entities/tour.entity';
 import { Review } from './entities/review.entity';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
@@ -11,13 +11,13 @@ import { UserEntity } from '../users/user.entity';
 @Injectable()
 export class ToursService {
   constructor(
-    @InjectRepository(Tour)
-    private toursRepository: Repository<Tour>,
+    @InjectRepository(TourEntity)
+    private toursRepository: Repository<TourEntity>,
     @InjectRepository(Review)
     private reviewsRepository: Repository<Review>,
   ) {}
 
-  async create(createTourDto: CreateTourDto, user: UserEntity): Promise<Tour> {
+  async create(createTourDto: CreateTourDto, user: UserEntity): Promise<TourEntity> {
     const tour = this.toursRepository.create({
       ...createTourDto,
       createdBy: user,
@@ -25,13 +25,13 @@ export class ToursService {
     return this.toursRepository.save(tour);
   }
 
-  async findAll(): Promise<Tour[]> {
+  async findAll(): Promise<TourEntity[]> {
     return this.toursRepository.find({
       relations: ['reviews', 'favoritedBy', 'createdBy'],
     });
   }
 
-  async findOne(id: number): Promise<Tour> {
+  async findOne(id: number): Promise<TourEntity> {
     const tour = await this.toursRepository.findOne({
       where: { id },
       relations: ['reviews', 'favoritedBy', 'createdBy'],
@@ -42,7 +42,7 @@ export class ToursService {
     return tour;
   }
 
-  async update(id: number, updateTourDto: UpdateTourDto, user: UserEntity): Promise<Tour> {
+  async update(id: number, updateTourDto: UpdateTourDto, user: UserEntity): Promise<TourEntity> {
     const tour = await this.findOne(id);
     if (tour.createdBy.id !== user.id) {
       throw new ForbiddenException('You can only update your own tours');
@@ -85,7 +85,7 @@ export class ToursService {
     return review;
   }
 
-  async addToFavorites(tourId: number, user: UserEntity): Promise<Tour> {
+  async addToFavorites(tourId: number, user: UserEntity): Promise<TourEntity> {
     const tour = await this.findOne(tourId);
     if (!tour.favoritedBy) {
       tour.favoritedBy = [];
@@ -97,7 +97,7 @@ export class ToursService {
     return tour;
   }
 
-  async removeFromFavorites(tourId: number, user: UserEntity): Promise<Tour> {
+  async removeFromFavorites(tourId: number, user: UserEntity): Promise<TourEntity> {
     const tour = await this.findOne(tourId);
     if (tour.favoritedBy) {
       tour.favoritedBy = tour.favoritedBy.filter(u => u.id !== user.id);
@@ -106,7 +106,7 @@ export class ToursService {
     return tour;
   }
 
-  async getFavorites(user: UserEntity): Promise<Tour[]> {
+  async getFavorites(user: UserEntity): Promise<TourEntity[]> {
     return this.toursRepository
       .createQueryBuilder('tour')
       .innerJoin('tour.favoritedBy', 'user')

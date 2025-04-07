@@ -17,7 +17,7 @@ Authorization: Bearer <your_jwt_token>
 
 #### Create Tour
 ```http
-POST /tours
+POST http://localhost:3000/api/tours
 ```
 
 **Authorization Required:** Yes (Tour Agency only)
@@ -29,11 +29,26 @@ POST /tours
   "description": "Погружение в культуру и традиции казахского народа",
   "city": "Алматы",
   "price": 1500.00,
-  "discountPercentage": 10,
+  "discountPrice": 1350.00,
   "type": "ethno",
   "status": "hot",
   "startDate": "2024-06-01",
-  "endDate": "2024-06-07"
+  "endDate": "2024-06-07",
+  "isActive": true,
+  "services": ["Транспорт", "Гид", "Питание", "Проживание"],
+  "itinerary": [
+    {
+      "location": "Алматы",
+      "description": "Обзорная экскурсия по городу",
+      "duration": "3 часа"
+    },
+    {
+      "location": "Большое Алматинское озеро",
+      "description": "Поездка к высокогорному озеру",
+      "duration": "5 часов"
+    }
+  ],
+  "images": ["url1.jpg", "url2.jpg"]
 }
 ```
 
@@ -45,17 +60,37 @@ POST /tours
   "description": "Погружение в культуру и традиции казахского народа",
   "city": "Алматы",
   "price": 1500.00,
-  "discountPercentage": 10,
+  "discountPrice": 1350.00,
   "type": "ethno",
   "status": "hot",
   "startDate": "2024-06-01",
   "endDate": "2024-06-07",
+  "isActive": true,
+  "services": ["Транспорт", "Гид", "Питание", "Проживание"],
+  "itinerary": [
+    {
+      "location": "Алматы",
+      "description": "Обзорная экскурсия по городу",
+      "duration": "3 часа"
+    },
+    {
+      "location": "Большое Алматинское озеро",
+      "description": "Поездка к высокогорному озеру",
+      "duration": "5 часов"
+    }
+  ],
+  "imageUrls": ["url1.jpg", "url2.jpg"],
   "averageRating": 0,
   "totalReviews": 0,
   "createdBy": {
     "id": 1,
     "email": "agency@example.com"
   },
+  "agencyName": "Туристическое агентство 'Казахстан'",
+  "agencyLogo": "https://example.com/logos/agency1.jpg",
+  "agencyCity": "Алматы",
+  "agencyDescription": "Лучшие туры по Казахстану",
+  "agencyContactEmail": "contact@agency.kz",
   "reviews": [],
   "favoritedBy": [],
   "createdAt": "2024-03-23T12:00:00Z",
@@ -79,17 +114,37 @@ GET /tours
     "description": "Погружение в культуру и традиции казахского народа",
     "city": "Алматы",
     "price": 1500.00,
-    "discountPercentage": 10,
+    "discountPrice": 1350.00,
     "type": "ethno",
     "status": "hot",
     "startDate": "2024-06-01",
     "endDate": "2024-06-07",
+    "isActive": true,
+    "services": ["Транспорт", "Гид", "Питание", "Проживание"],
+    "itinerary": [
+      {
+        "location": "Алматы",
+        "description": "Обзорная экскурсия по городу",
+        "duration": "3 часа"
+      },
+      {
+        "location": "Большое Алматинское озеро",
+        "description": "Поездка к высокогорному озеру",
+        "duration": "5 часов"
+      }
+    ],
+    "imageUrls": ["url1.jpg", "url2.jpg"],
     "averageRating": 4.5,
     "totalReviews": 2,
     "createdBy": {
       "id": 1,
       "email": "agency@example.com"
     },
+    "agencyName": "Туристическое агентство 'Казахстан'",
+    "agencyLogo": "https://example.com/logos/agency1.jpg",
+    "agencyCity": "Алматы",
+    "agencyDescription": "Лучшие туры по Казахстану",
+    "agencyContactEmail": "contact@agency.kz",
     "reviews": [...],
     "favoritedBy": [...],
     "createdAt": "2024-03-23T12:00:00Z",
@@ -116,17 +171,37 @@ GET /tours/:id
   "description": "Погружение в культуру и традиции казахского народа",
   "city": "Алматы",
   "price": 1500.00,
-  "discountPercentage": 10,
+  "discountPrice": 1350.00,
   "type": "ethno",
   "status": "hot",
   "startDate": "2024-06-01",
   "endDate": "2024-06-07",
+  "isActive": true,
+  "services": ["Транспорт", "Гид", "Питание", "Проживание"],
+  "itinerary": [
+    {
+      "location": "Алматы",
+      "description": "Обзорная экскурсия по городу",
+      "duration": "3 часа"
+    },
+    {
+      "location": "Большое Алматинское озеро",
+      "description": "Поездка к высокогорному озеру",
+      "duration": "5 часов"
+    }
+  ],
+  "imageUrls": ["url1.jpg", "url2.jpg"],
   "averageRating": 4.5,
   "totalReviews": 2,
   "createdBy": {
     "id": 1,
     "email": "agency@example.com"
   },
+  "agencyName": "Туристическое агентство 'Казахстан'",
+  "agencyLogo": "https://example.com/logos/agency1.jpg",
+  "agencyCity": "Алматы",
+  "agencyDescription": "Лучшие туры по Казахстану",
+  "agencyContactEmail": "contact@agency.kz",
   "reviews": [...],
   "favoritedBy": [...],
   "createdAt": "2024-03-23T12:00:00Z",
@@ -371,4 +446,4 @@ enum TourStatus {
 5. All protected endpoints require valid JWT token
 6. Tour Agency can only modify their own tours
 7. Reviews can only be added by authenticated users
-8. Favorites functionality is available only to authenticated users 
+8. Favorites functionality is available only to authenticated users

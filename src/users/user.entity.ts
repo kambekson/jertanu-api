@@ -3,7 +3,7 @@ import { Exclude } from "class-transformer";
 
 import { ProfileEntity } from "../profiles/entities/profile.entity";
 import { RoleEntity } from "../roles/entities/role.entity";
-import { Tour } from "../tours/entities/tour.entity";
+import { TourEntity } from "../tours/entities/tour.entity";
 import { Review } from "../tours/entities/review.entity";
 
 export enum Role {
@@ -42,11 +42,11 @@ export class UserEntity {
   @JoinColumn()
   profile: ProfileEntity;
 
-  @OneToMany(() => Tour, tour => tour.createdBy)
-  createdTours: Tour[];
+  @OneToMany(() => TourEntity, tour => tour.createdBy)
+  createdTours: TourEntity[];
 
-  @ManyToMany(() => Tour, tour => tour.favoritedBy)
-  favoriteTours: Tour[];
+  @ManyToMany(() => TourEntity, tour => tour.favoritedBy)
+  favoriteTours: TourEntity[];
 
   @OneToMany(() => Review, review => review.user)
   reviews: Review[];

@@ -7,18 +7,19 @@ export enum TourType {
   NATURE = 'nature',
   CULTURAL = 'cultural',
   ADVENTURE = 'adventure',
+  GASTRO = 'gastronomy',
   OTHER = 'other'
 }
 
 export enum TourStatus {
   HOT = 'hot',
   SEASONAL = 'seasonal',
-  REGULAR = 'regular',
-  UPCOMING = 'upcoming'
+  NEW_DESTINATION = 'new_destination',
+  REGULAR = 'regular'
 }
 
 @Entity('tours')
-export class Tour {
+export class TourEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -34,7 +35,7 @@ export class Tour {
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
-  @Column('decimal', { precision: 10, scale: 2,})
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   discountPrice: number;
 
   @Column({

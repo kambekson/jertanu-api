@@ -27,14 +27,14 @@ export class ToursService {
 
   async findAll(): Promise<Tour[]> {
     return this.toursRepository.find({
-      relations: ['reviews', 'favoritedBy'],
+      relations: ['reviews', 'favoritedBy', 'createdBy'],
     });
   }
 
   async findOne(id: number): Promise<Tour> {
     const tour = await this.toursRepository.findOne({
       where: { id },
-      relations: ['reviews', 'favoritedBy'],
+      relations: ['reviews', 'favoritedBy', 'createdBy'],
     });
     if (!tour) {
       throw new NotFoundException(`Tour with ID ${id} not found`);
@@ -47,6 +47,13 @@ export class ToursService {
     if (tour.createdBy.id !== user.id) {
       throw new ForbiddenException('You can only update your own tours');
     }
+    
+    // Если в updateTourDto есть images, обновляем imageUrls
+    if (updateTourDto.images) {
+      // Преобразуем массив File в массив строк (URL изображений)
+      tour.imageUrls = updateTourDto.images.map(image => image.toString());
+    }
+    
     Object.assign(tour, updateTourDto);
     return this.toursRepository.save(tour);
   }
@@ -106,4 +113,4 @@ export class ToursService {
       .where('user.id = :userId', { userId: user.id })
       .getMany();
   }
-} 
+}

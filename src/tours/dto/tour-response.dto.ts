@@ -47,4 +47,7 @@ export class TourResponseDto {
 
   @Expose()
   updatedAt: Date;
-} 
+
+  @Expose()
+  imageUrls: string[];
+}

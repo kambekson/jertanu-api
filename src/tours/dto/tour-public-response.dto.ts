@@ -2,6 +2,7 @@ import { Expose, Type, Transform } from 'class-transformer';
 import { UserPublicDto } from '../../users/dto/user-public.dto';
 import { AgencyProfilePublicDto } from '../../profiles/dto/agency-profile-public.dto';
 import { Role } from '../../roles/enums/role.enum';
+import { ItineraryItemDto } from './create-tour.dto';
 
 export class TourPublicResponseDto {
   @Expose()
@@ -26,10 +27,20 @@ export class TourPublicResponseDto {
   status: string;
 
   @Expose()
+  maxParticipants: number;
+
+  @Expose()
   startDate: Date;
 
   @Expose()
   endDate: Date;
+
+  @Expose()
+  services: string[];
+
+  @Expose()
+  @Type(() => ItineraryItemDto)
+  itinerary: ItineraryItemDto[];
 
   @Expose()
   averageRating: number;

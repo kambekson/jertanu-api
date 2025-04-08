@@ -1,5 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { UserDto } from '../../users/dto/user.dto';
+import { ItineraryItemDto } from './create-tour.dto';
 
 export class TourResponseDto {
   @Expose()
@@ -27,10 +28,20 @@ export class TourResponseDto {
   status: string;
 
   @Expose()
+  maxParticipants: number;
+
+  @Expose()
   startDate: Date;
 
   @Expose()
   endDate: Date;
+
+  @Expose()
+  services: string[];
+
+  @Expose()
+  @Type(() => ItineraryItemDto)
+  itinerary: ItineraryItemDto[];
 
   @Expose()
   averageRating: number;

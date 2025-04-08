@@ -37,6 +37,11 @@ export class CreateTourDto {
   @IsEnum(TourStatus)
   status: TourStatus;
 
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  maxParticipants?: number;
+
   @Type(() => Date)
   @IsDate()
   startDate: Date;

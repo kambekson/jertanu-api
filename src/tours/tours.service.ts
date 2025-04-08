@@ -18,6 +18,8 @@ export class ToursService {
   ) {}
 
   async create(createTourDto: CreateTourDto, user: UserEntity): Promise<TourEntity> {
+    console.log('Creating tour with itinerary:', JSON.stringify(createTourDto.itinerary, null, 2));
+    
     const tour = this.toursRepository.create({
       ...createTourDto,
       createdBy: user,
@@ -26,13 +28,21 @@ export class ToursService {
   }
 
   async findAll(): Promise<TourEntity[]> {
-    return this.toursRepository.find({
+    const tours = await this.toursRepository.find({
       relations: ['reviews', 'favoritedBy', 'createdBy', 'createdBy.profile'],
+    });
+    
+    // Обеспечиваем, что itinerary всегда возвращается как массив объектов
+    return tours.map(tour => {
+      if (!tour.itinerary || !Array.isArray(tour.itinerary)) {
+        tour.itinerary = [];
+      }
+      return tour;
     });
   }
 
   async findByAgency(userId: number): Promise<TourEntity[]> {
-    return this.toursRepository.find({
+    const tours = await this.toursRepository.find({
       where: {
         createdBy: { id: userId }
       },
@@ -41,6 +51,14 @@ export class ToursService {
         createdAt: 'DESC'
       }
     });
+    
+    // Обеспечиваем, что itinerary всегда возвращается как массив объектов
+    return tours.map(tour => {
+      if (!tour.itinerary || !Array.isArray(tour.itinerary)) {
+        tour.itinerary = [];
+      }
+      return tour;
+    });
   }
 
   async findOne(id: number): Promise<TourEntity> {
@@ -48,9 +66,16 @@ export class ToursService {
       where: { id },
       relations: ['reviews', 'favoritedBy', 'createdBy', 'createdBy.profile'],
     });
+    
     if (!tour) {
       throw new NotFoundException(`Tour with ID ${id} not found`);
     }
+    
+    // Обеспечиваем, что itinerary всегда возвращается как массив объектов
+    if (!tour.itinerary || !Array.isArray(tour.itinerary)) {
+      tour.itinerary = [];
+    }
+    
     return tour;
   }
 

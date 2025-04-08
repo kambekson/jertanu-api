@@ -18,6 +18,12 @@ export enum TourStatus {
   REGULAR = 'regular'
 }
 
+export class ItineraryItem {
+  location: string;
+  description: string;
+  duration: string;
+}
+
 @Entity('tours')
 export class TourEntity {
   @PrimaryGeneratedColumn()
@@ -52,11 +58,20 @@ export class TourEntity {
   })
   status: TourStatus;
 
+  @Column('int', { default: 0 })
+  maxParticipants: number;
+
   @Column('date')
   startDate: Date;
 
   @Column('date')
   endDate: Date;
+  
+  @Column('simple-array', { nullable: true })
+  services: string[];
+
+  @Column('jsonb', { nullable: true, default: '[]' })
+  itinerary: ItineraryItem[];
   
   @Column('simple-array', { nullable: true })
   imageUrls: string[];

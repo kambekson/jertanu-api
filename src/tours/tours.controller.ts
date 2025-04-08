@@ -46,6 +46,21 @@ export class ToursController {
           .replace(/,\s*\]/g, ']'); // Удаление запятых перед закрывающей квадратной скобкой
           
         tourData = JSON.parse(cleanedJsonString);
+        
+        // Проверяем и корректно обрабатываем поле itinerary
+        if (tourData.itinerary && Array.isArray(tourData.itinerary)) {
+          // Преобразуем строковые значения в объекты, если это необходимо
+          tourData.itinerary = tourData.itinerary.map(item => {
+            if (typeof item === 'string') {
+              try {
+                return JSON.parse(item);
+              } catch (e) {
+                return item;
+              }
+            }
+            return item;
+          });
+        }
       } else {
         // Если данные пришли в формате JSON
         tourData = createTourDto;
@@ -53,6 +68,8 @@ export class ToursController {
     } catch (error) {
       throw new Error(`Invalid JSON format: ${error.message}. Please check your input data.`);
     }
+    
+    console.log('Tour data to save:', JSON.stringify(tourData, null, 2));
     
     // Создаем тур
     const tour = await this.toursService.create(tourData, req.user);
@@ -69,7 +86,9 @@ export class ToursController {
       await this.toursService.update(tour.id, { images: imageUrls }, req.user);
     }
     
-    return tour;
+    // Перезагружаем тур для получения всех данных
+    const savedTour = await this.toursService.findOne(tour.id);
+    return savedTour;
   }
 
   @Get()

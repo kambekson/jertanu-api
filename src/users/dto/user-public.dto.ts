@@ -1,7 +1,5 @@
-import { Expose, Type, TypeHelpOptions } from "class-transformer";
-import { UserProfileDto } from '../../profiles/dto/user-profile.dto';
+import { Expose, Type } from 'class-transformer';
 import { AgencyProfilePublicDto } from '../../profiles/dto/agency-profile-public.dto';
-import { Role } from '../user.entity';
 
 export class UserPublicDto {
   @Expose()
@@ -11,15 +9,9 @@ export class UserPublicDto {
   email: string;
 
   @Expose()
-  role: Role;
+  role: string;
 
   @Expose()
-  @Type((options: TypeHelpOptions) => {
-    const obj = options.object as { role: Role };
-    if (obj.role === Role.TOUR_AGENCY) {
-      return AgencyProfilePublicDto;
-    }
-    return UserProfileDto;
-  })
-  profile: UserProfileDto | AgencyProfilePublicDto;
+  @Type(() => AgencyProfilePublicDto)
+  profile: AgencyProfilePublicDto;
 }

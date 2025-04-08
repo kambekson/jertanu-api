@@ -27,14 +27,26 @@ export class ToursService {
 
   async findAll(): Promise<TourEntity[]> {
     return this.toursRepository.find({
-      relations: ['reviews', 'favoritedBy', 'createdBy'],
+      relations: ['reviews', 'favoritedBy', 'createdBy', 'createdBy.profile'],
+    });
+  }
+
+  async findByAgency(userId: number): Promise<TourEntity[]> {
+    return this.toursRepository.find({
+      where: {
+        createdBy: { id: userId }
+      },
+      relations: ['reviews', 'favoritedBy', 'createdBy', 'createdBy.profile'],
+      order: {
+        createdAt: 'DESC'
+      }
     });
   }
 
   async findOne(id: number): Promise<TourEntity> {
     const tour = await this.toursRepository.findOne({
       where: { id },
-      relations: ['reviews', 'favoritedBy', 'createdBy'],
+      relations: ['reviews', 'favoritedBy', 'createdBy', 'createdBy.profile'],
     });
     if (!tour) {
       throw new NotFoundException(`Tour with ID ${id} not found`);
@@ -110,6 +122,10 @@ export class ToursService {
     return this.toursRepository
       .createQueryBuilder('tour')
       .innerJoin('tour.favoritedBy', 'user')
+      .leftJoinAndSelect('tour.createdBy', 'createdBy')
+      .leftJoinAndSelect('createdBy.profile', 'profile')
+      .leftJoinAndSelect('tour.reviews', 'reviews')
+      .leftJoinAndSelect('tour.favoritedBy', 'favoritedBy')
       .where('user.id = :userId', { userId: user.id })
       .getMany();
   }

@@ -20,9 +20,6 @@ export class TourPublicResponseDto {
   price: number;
 
   @Expose()
-  discountPercentage: number;
-
-  @Expose()
   type: string;
 
   @Expose()

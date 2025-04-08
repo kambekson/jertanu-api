@@ -34,14 +34,24 @@ export class ToursController {
   ) {
     let tourData: CreateTourDto;
     
-    // Проверяем, содержит ли запрос данные в формате form-data или JSON
-    if (typeof createTourDto === 'string' || createTourDto.data) {
-      // Если данные пришли в формате form-data
-      const tourDataString = typeof createTourDto === 'string' ? createTourDto : createTourDto.data;
-      tourData = JSON.parse(tourDataString);
-    } else {
-      // Если данные пришли в формате JSON
-      tourData = createTourDto;
+    try {
+      // Проверяем, содержит ли запрос данные в формате form-data или JSON
+      if (typeof createTourDto === 'string' || createTourDto.data) {
+        // Если данные пришли в формате form-data
+        const tourDataString = typeof createTourDto === 'string' ? createTourDto : createTourDto.data;
+        
+        // Предварительная обработка JSON строки для исправления распространенных ошибок
+        const cleanedJsonString = tourDataString
+          .replace(/,\s*}/g, '}')  // Удаление запятых перед закрывающей фигурной скобкой
+          .replace(/,\s*\]/g, ']'); // Удаление запятых перед закрывающей квадратной скобкой
+          
+        tourData = JSON.parse(cleanedJsonString);
+      } else {
+        // Если данные пришли в формате JSON
+        tourData = createTourDto;
+      }
+    } catch (error) {
+      throw new Error(`Invalid JSON format: ${error.message}. Please check your input data.`);
     }
     
     // Создаем тур
@@ -67,6 +77,14 @@ export class ToursController {
   @Serialize(TourPublicResponseDto)
   findAll() {
     return this.toursService.findAll();
+  }
+
+  @Get('agency/my')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.TOUR_AGENCY)
+  @Serialize(TourPublicResponseDto)
+  findMyTours(@Req() req) {
+    return this.toursService.findByAgency(req.user.id);
   }
 
   @Get(':id')

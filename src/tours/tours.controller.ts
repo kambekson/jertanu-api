@@ -116,9 +116,54 @@ export class ToursController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.TOUR_AGENCY)
+  @UseInterceptors(FilesInterceptor('images'))
   @Serialize(TourResponseDto)
-  update(@Param('id') id: string, @Body() updateTourDto: UpdateTourDto, @Req() req) {
-    return this.toursService.update(+id, updateTourDto, req.user);
+  async update(
+    @Param('id') id: string,
+    @Body() updateTourDto: any,
+    @UploadedFiles() images: Express.Multer.File[],
+    @Req() req
+  ) {
+    let tourData: UpdateTourDto;
+    
+    try {
+      // Проверяем, содержит ли запрос данные в формате form-data или JSON
+      if (typeof updateTourDto === 'string' || updateTourDto.data) {
+        // Если данные пришли в формате form-data
+        const tourDataString = typeof updateTourDto === 'string' ? updateTourDto : updateTourDto.data;
+        
+        // Предварительная обработка JSON строки для исправления распространенных ошибок
+        const cleanedJsonString = tourDataString
+          .replace(/,\s*}/g, '}')  // Удаление запятых перед закрывающей фигурной скобкой
+          .replace(/,\s*\]/g, ']'); // Удаление запятых перед закрывающей квадратной скобкой
+          
+        tourData = JSON.parse(cleanedJsonString);
+      } else {
+        // Если данные пришли в формате JSON
+        tourData = updateTourDto;
+      }
+    } catch (error) {
+      throw new Error(`Invalid JSON format: ${error.message}. Please check your input data.`);
+    }
+
+    // Обновляем тур
+    const tour = await this.toursService.update(+id, tourData, req.user);
+    
+    // Загружаем изображения, если они есть
+    if (images && images.length > 0) {
+      const imageUrls = [];
+      for (const image of images) {
+        const imageUrl = await this.minioService.uploadTourImage(image, tour.id);
+        imageUrls.push(imageUrl);
+      }
+      
+      // Обновляем тур с URL-адресами изображений
+      await this.toursService.update(tour.id, { images: imageUrls }, req.user);
+    }
+    
+    // Перезагружаем тур для получения всех данных
+    const updatedTour = await this.toursService.findOne(tour.id);
+    return updatedTour;
   }
 
   @Delete(':id')

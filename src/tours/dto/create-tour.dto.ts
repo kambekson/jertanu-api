@@ -1,15 +1,18 @@
 import { IsString, IsNumber, IsEnum, IsDate, Min, Max, IsOptional, IsBoolean, IsArray, ValidateNested, ArrayMinSize } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Type, Expose } from 'class-transformer';
 import { TourType, TourStatus } from '../entities/tour.entity';
 
 export class ItineraryItemDto {
   @IsString()
+  @Expose()
   location: string;
 
   @IsString()
+  @Expose()
   description: string;
 
   @IsString()
+  @Expose()
   duration: string;
 }
 
